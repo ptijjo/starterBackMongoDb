@@ -5,16 +5,18 @@
 
 import { Router } from "express";
 import { Route } from ".";
+import { userController } from "../controllers/user.controller";
 
 
 export class UserRoute implements Route{
     path="/users"
-    router=Router();
+    router = Router();
+    userCtrl = new userController();
 
     constructor(){
         this.router
-            .get(`${this.path}`)
-            .get(`${this.path}/:id`)
+            .get(`${this.path}`,this.userCtrl.findAll)
+            .get(`${this.path}/:id`,this.userCtrl.findOne)
             .post(`${this.path}`)
             .put(`${this.path}/:id`)
             .delete(`${this.path}/:id`)

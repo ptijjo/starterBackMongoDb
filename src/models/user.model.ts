@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { UserInterface } from "./user.interface";
-import uniquevalidator from 'mongoose-unique-validator';
 
 
 const userSchema = new mongoose.Schema<UserInterface>({
@@ -43,6 +42,4 @@ const userSchema = new mongoose.Schema<UserInterface>({
 
 });
 
-userSchema.plugin(uniquevalidator);
-
-module.exports = mongoose.model("User",userSchema);
+export const User = mongoose.model("User",userSchema);
