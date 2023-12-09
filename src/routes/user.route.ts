@@ -17,7 +17,7 @@ export class UserRoute implements Route{
         this.router
             .get(`${this.path}`,this.userCtrl.findAll)
             .get(`${this.path}/:id`,this.userCtrl.findOne)
-            .post(`${this.path}`)
+            .post(`${this.path}`,this.userCtrl.newUser)
             .put(`${this.path}/:id`)
             .delete(`${this.path}/:id`)
     }
