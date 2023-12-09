@@ -27,7 +27,7 @@ export class userController{
 
     public findOne = async (req: Request, res: Response):Promise<void> => {
         try {
-            const userId = Number(req.params.id);
+            const userId = req.params.id;
             const oneUser = await User.findById(userId);
 
             res.status(200).json({
@@ -70,6 +70,59 @@ export class userController{
                 message: "status ok! 👍",
                 reponse: newUser
             });
+            
+        } catch (error) {
+            res.status(400).json({
+                message: "status fail! 🤯",
+                response: error
+            })
+        }
+    };
+
+    public deleteUser = async (req: Request, res: Response) => {
+        
+        try {
+            const userId = req.params.id;
+            await User.findByIdAndDelete(userId);
+
+            res.status(201).json({
+                message: "status ok! 👍",
+                reponse: `${userId} a été supprimé !`
+            });
+            
+        } catch (error) {
+            res.status(400).json({
+                message: "status fail! 🤯",
+                response: error
+            })
+        }
+    };
+
+    public connectionUser = async (req: Request, res: Response) => {
+        try {
+
+            /**
+             * @findUser est le resultat de la recherche de l'email de la requete dans la base de données
+             * si elle n'existe pas on renvoi un message d'erreur
+             * @findMdp est le résultat de la comparaison du mot de passe de la requete et celle de l'utilisateur trouvé
+             * si le mdp ne correspond pas on renvoi un message d'erreur 
+             * Ensuite on crée un token de connection  
+             */
+            const findUser:UserInterface|null = await User.findOne({ email: req.body.email });
+
+            
+            if (findUser===null) return res.status(401).json({ message: 'Identifiants incorrects' });
+
+            const findMdp = await bcrypt.compare(req.body.password, findUser.password);
+
+            if (!findMdp) return res.status(401).json({ message: 'Identifiants incorrects' });
+
+            res.status(200).json({})
+
+            
+            
+            
+           
             
         } catch (error) {
             res.status(400).json({

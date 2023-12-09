@@ -6,6 +6,7 @@
 import { Router } from "express";
 import { Route } from ".";
 import { userController } from "../controllers/user.controller";
+import {pictureMulter} from "../middleware/picture-multer";
 
 
 export class UserRoute implements Route{
@@ -17,8 +18,9 @@ export class UserRoute implements Route{
         this.router
             .get(`${this.path}`,this.userCtrl.findAll)
             .get(`${this.path}/:id`,this.userCtrl.findOne)
-            .post(`${this.path}`,this.userCtrl.newUser)
-            .put(`${this.path}/:id`)
-            .delete(`${this.path}/:id`)
+            .post(`${this.path}`, this.userCtrl.newUser)
+            .post(`${this.path}/connection`, this.userCtrl.connectionUser)
+            .put(`${this.path}/:id`,pictureMulter)
+            .delete(`${this.path}/:id`,this.userCtrl.deleteUser)
     }
 }
